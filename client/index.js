@@ -10,12 +10,13 @@ async function fetchData(url, body = {}) {
   });
   const reader = response.body
     .pipeThrough(new TextDecoderStream())
-    .pipeThrough(new EventSourceParserStream())
+    // .pipeThrough(new EventSourceParserStream())
     .getReader();
   const logItem = document.createElement("p");
   document.getElementById("container").appendChild(logItem);
   while (true) {
     const { value, done } = await reader.read();
+    console.info("stream:", value);
     try {
       const val = JSON.parse(value.data);
       const d = val?.data;

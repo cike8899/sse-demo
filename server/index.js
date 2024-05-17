@@ -27,15 +27,15 @@ const server = http.createServer((req, res) => {
       };
       // Convert the event object to a string
       const eventString = `event: ${event.name}\ndata: ${event.data}\nid: ${event.id}\n\n`;
-      const dataString = `data:${JSON.stringify(event)}\n\n`; // json format data
+      const dataString = `event: xx\ndata:${JSON.stringify(event)}\n\n`; // json format data
       // Write the event string to the response stream
       res.write(dataString);
       // End the response stream after 10 events
-      if (counter === 100) {
+      if (counter === 50) {
         clearInterval(interval);
         res.end();
       }
-    }, 10);
+    }, 100);
   } else if (req.url === "/stream") {
     res.writeHead(200, {
       "Content-Type": "text/event-stream",
