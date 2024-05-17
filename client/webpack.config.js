@@ -22,11 +22,13 @@ module.exports = {
   devServer: {
     port: 8345,
     static: "./dist",
+    compress: false,
     proxy: [
       {
-        context: ["/sse"],
+        context: ["/sse", "/stream"],
         target: "http://127.0.0.1:3333",
         changeOrigin: true,
+        ws: true,
       },
     ],
   },

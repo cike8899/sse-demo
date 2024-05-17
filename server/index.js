@@ -27,14 +27,38 @@ const server = http.createServer((req, res) => {
       };
       // Convert the event object to a string
       const eventString = `event: ${event.name}\ndata: ${event.data}\nid: ${event.id}\n\n`;
+      const dataString = `data:${JSON.stringify(event)}\n\n`; // json format data
       // Write the event string to the response stream
-      res.write(eventString);
+      res.write(dataString);
       // End the response stream after 10 events
-      if (counter === 10) {
+      if (counter === 100) {
         clearInterval(interval);
         res.end();
       }
-    }, 2000);
+    }, 10);
+  } else if (req.url === "/stream") {
+    res.writeHead(200, {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+      "Access-Control-Allow-Origin": "*",
+    });
+    res.write("retry: 10000\n");
+    res.write("event: connecttime\n");
+    res.write("data: " + new Date() + "\n\n");
+    res.write("data: " + new Date() + "\n\n");
+
+    interval = setInterval(function () {
+      res.write("data: " + new Date() + "\n\n");
+    }, 1000);
+
+    req.connection.addListener(
+      "close",
+      function () {
+        clearInterval(interval);
+      },
+      false
+    );
   } else {
     // Handle other requests
     res.writeHead(404);
