@@ -18,6 +18,31 @@ module.exports = {
       template: "index.html",
     }),
   ],
+  module: {
+    rules: [
+      // {
+      //   test: /\.md$/,
+      //   use: {
+      //     loader: "remark-loader",
+      //   },
+      // },
+      {
+        test: /\.md$/,
+        use: [
+          {
+            loader: "html-loader",
+          },
+          {
+            loader: "markdown-loader",
+            options: {
+              // Pass options to marked
+              // See https://marked.js.org/using_advanced#options
+            },
+          },
+        ],
+      },
+    ],
+  },
   devtool: "inline-source-map",
   devServer: {
     port: 8345,

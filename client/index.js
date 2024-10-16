@@ -1,4 +1,5 @@
 import { EventSourceParserStream } from "eventsource-parser/stream";
+import doc from "./api.md";
 
 async function fetchData(url, body = {}) {
   const response = await fetch(url || "/sse", {
@@ -121,8 +122,15 @@ async function sendMsg() {
   });
 }
 
+function loadMd() {
+  console.log("🚀 ~ loadMd ~ doc:", doc);
+
+  return doc;
+}
+
 window.fetchData = fetchData;
 window.fetchDataNext = fetchDataNext;
 window.fetchDataWithPureSse = fetchDataWithPureSse;
 window.fetchDataAgain = fetchDataAgain;
 window.sendMsg = sendMsg;
+window.loadMd = loadMd;
